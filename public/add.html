@@ -113,24 +113,49 @@
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					data.length < 4 ? postTables() : postWaiting();
-				});
-
-			fetch('/api/tables', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(newReservation),
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					console.log('add.html', data);
-					alert(`Thank you for your reservation: ${data.name}`);
+					data.length < 5 ? postTables() : postWaiting();
 				})
 				.catch((error) => {
-					console.error('Error:', error);
+					console.error(error);
 				});
+
+			function postTables() {
+				fetch('/api/tables', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(newReservation),
+				})
+					.then((response) => response.json())
+					.then((data) => {
+						console.log('add.html', data);
+						alert(`Thank you for your reservation: ${data.name}`);
+					})
+					.catch((error) => {
+						console.error('Error:', error);
+					});
+			}
+
+			function postWaiting() {
+				fetch('/api/waitlist', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(newReservation),
+				})
+					.then((response) => response.json())
+					.then((data) => {
+						console.log('add.html', data);
+						alert(
+							`Thank you for your reservation, you have been added to the wait list: ${data.name}`
+						);
+					})
+					.catch((error) => {
+						console.error('Error:', error);
+					});
+			}
 		});
 	</script>
 </html>

@@ -117,6 +117,28 @@ router.post('/api/tables', (req, res) => {
 	res.json(newReservation);
 });
 
+router.post('/api/waitlist', (req, res) => {
+	// req.body hosts is equal to the JSON post sent from the user
+	// This works because of our body parsing middleware
+	const newReservation = req.body;
+
+	// Using a RegEx Pattern to remove spaces from newCharacter
+	// You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
+	newReservation.routeName = newReservation.name
+		.replace(/\s+/g, '')
+		.toLowerCase();
+	console.log(newReservation);
+
+	waitlist.push(newReservation);
+	res.json(newReservation);
+});
+
+router.post('/api/clear', (req, res) => {
+	waitlist.splice(0, waitlist.length);
+	tables.splice(0, tables.length);
+	res.end();
+});
+
 app.use(router);
 // Starts the server to begin listening
 

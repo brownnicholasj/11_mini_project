@@ -79,7 +79,7 @@
 	<script type="text/javascript">
 		const tableList = document.getElementById('tableList');
 		const waitList = document.getElementById('waitList');
-		const clearTable2 = document.getElementById('clear');
+		const clearTable = document.getElementById('clear');
 
 		function runTableQuery() {
 			fetch(`/api/tables`, {
@@ -122,30 +122,41 @@
 					console.error(error);
 				});
 		}
-		//clearTable.addEventListener('click', (e) => {
-		//      e.preventDefault();
-		//clearTable();
-		//}
 
-		//Clearing the data in the tables
-		function clearTable() {
+		clearTable.addEventListener('click', (e) => {
+			e.preventDefault();
 			alert('Clearing...');
 
-			//STILL NOT WORKING
-			const wL = $('#waitList');
-			const tL = $('#tableList');
-			$.ajax({
-				url: '/api/tables',
-				method: 'post',
-				data: null,
-				success: function () {
-					wL.empty();
-					tL.empty();
+			fetch('/api/clear', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
 				},
 			});
-		}
-		//INITIAL ISSUE WAS NO # IN FRONT OF CLEAR
-		$('#clear').on('click', clearTable);
+
+			tableList.innerHTML = '';
+			waitList.innerHTML = '';
+		});
+
+		// //Clearing the data in the tables
+		// function clearTable() {
+		// 	alert('Clearing...');
+
+		// 	//STILL NOT WORKING
+		// 	const wL = $('#waitList');
+		// 	const tL = $('#tableList');
+		// 	$.ajax({
+		// 		url: '/api/tables',
+		// 		method: 'post',
+		// 		data: null,
+		// 		success: function () {
+		// 			wL.empty();
+		// 			tL.empty();
+		// 		},
+		// 	});
+		// }
+		// //INITIAL ISSUE WAS NO # IN FRONT OF CLEAR
+		// $('#clear').on('click', clearTable);
 
 		//Running the functions
 		runTableQuery();
